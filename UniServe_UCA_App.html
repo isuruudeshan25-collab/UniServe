@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>UniServe UCA — University College of Anuradhapura</title>
+<meta name="description" content="UniServe UCA — Smart Academic Service & Governance Platform of University College of Anuradhapura. Submit, track & manage academic requests.">
+<meta name="theme-color" content="#F47B20">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="UniServe UCA">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --brand:#F47B20; --brand-d:#d96a14; --brand-l:#fdeede;
+  --ink:#1b2433; --ink2:#4a5568; --line:#e6e9f0; --bg:#f4f6fa; --card:#ffffff;
+  --ok:#16a34a; --warn:#d97706; --info:#2563eb; --bad:#dc2626;
+  --r:16px; --sh:0 10px 30px rgba(27,36,51,.08);
+  --font:'Segoe UI',system-ui,-apple-system,Roboto,'Noto Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--bg);color:var(--ink)}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#c9d2e0;border-radius:8px}
+
+/* ---------- SPLASH ---------- */
+#splash{position:fixed;inset:0;background:linear-gradient(160deg,#fff 0%,#fff5ec 55%,#ffe8d1 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;transition:opacity .6s,visibility .6s}
+#splash.hide{opacity:0;visibility:hidden}
+.uwrap{position:relative;width:170px;height:170px;animation:pop .9s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.uca-u{width:170px;height:170px}
+.uca-u path{fill:var(--brand)}
+.circ{fill:none;stroke:#1b2433;stroke-width:8;stroke-linecap:round;stroke-dasharray:480;stroke-dashoffset:480;animation:draw 1.4s .4s forwards ease}
+@keyframes draw{to{stroke-dashoffset:0}}
+.dot{fill:#fff;stroke:#1b2433;stroke-width:8;opacity:0;animation:dotin .4s forwards}
+@keyframes dotin{to{opacity:1}}
+#splash h1{margin-top:26px;font-size:clamp(20px,4.6vw,30px);letter-spacing:.5px;opacity:0;animation:fadeup .8s .9s forwards;text-align:center;padding:0 24px}
+#splash p{color:var(--ink2);margin-top:8px;font-size:14px;letter-spacing:3px;text-transform:uppercase;opacity:0;animation:fadeup .8s 1.2s forwards;text-align:center;padding:0 24px}
+#splash .bar{width:180px;height:4px;background:#eadfce;border-radius:4px;margin-top:26px;overflow:hidden;opacity:0;animation:fadeup .4s 1.4s forwards}
+#splash .bar i{display:block;height:100%;width:0;background:var(--brand);border-radius:4px;animation:load 1.6s 1.4s forwards ease}
+@keyframes load{to{width:100%}}
+@keyframes fadeup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.brandline{display:flex;align-items:center;gap:10px}
+.brandline .mini{width:34px;height:34px}
+
+/* ---------- WELCOME ---------- */
+#welcome{position:fixed;inset:0;background:linear-gradient(160deg,#1b2433,#2b3a55);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:190;color:#fff;text-align:center;padding:20px;transition:opacity .7s,visibility .7s}
+#welcome.hide{opacity:0;visibility:hidden}
+#welcome .uwrap{width:110px;height:110px}
+#welcome h2{font-size:clamp(22px,5vw,34px);margin-top:22px;font-weight:700}
+#welcome h2 span{color:var(--brand)}
+#welcome p{color:#b9c4d6;margin-top:10px;font-size:15px;opacity:0;animation:fadeup .7s .5s forwards}
+#welcome .who{margin-top:18px;display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:8px 18px;border-radius:99px;font-size:14px;opacity:0;animation:fadeup .7s .8s forwards}
+#welcome .who img{width:30px;height:30px;border-radius:50%;object-fit:cover}
+.spark{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--brand);animation:sp 2.4s infinite ease-in-out}
+@keyframes sp{0%,100%{transform:translateY(0) scale(.6);opacity:.2}50%{transform:translateY(-22px) scale(1);opacity:1}}
+
+/* ---------- AUTH / ROLE ---------- */
+.authwrap{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr;background:var(--bg)}
+.brandpane{position:relative;background:linear-gradient(160deg,#182134 0%,#22314b 55%,#2b3a55 100%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:44px 30px;overflow:hidden;text-align:center}
+.brandpane .glow{position:absolute;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(244,123,32,.30),transparent 65%);top:-130px;right:-130px;animation:drift 9s ease-in-out infinite alternate}
+.brandpane .glow.g2{background:radial-gradient(circle,rgba(96,140,255,.18),transparent 65%);top:auto;left:-140px;right:auto;bottom:-150px;animation-delay:2s}
+@keyframes drift{to{transform:translate(-36px,44px) scale(1.15)}}
+.circuit{position:absolute;inset:0;width:100%;height:100%;opacity:.14}
+.cnode{position:absolute;width:7px;height:7px;border-radius:50%;background:#F47B20;animation:blink 2.6s infinite}
+.cnode.b{background:#7ea4ff}
+@keyframes blink{0%,100%{opacity:.12}50%{opacity:1;box-shadow:0 0 12px #F47B20}}
+@keyframes blinkb{0%,100%{opacity:.12}50%{opacity:1;box-shadow:0 0 12px #7ea4ff}}
+.brandpane .biglogo{width:150px;height:150px;animation:pop .9s cubic-bezier(.2,1.4,.4,1) both;filter:drop-shadow(0 16px 34px rgba(0,0,0,.45))}
+.brandpane h1{font-size:clamp(22px,2.8vw,32px);margin-top:26px;animation:fadeup .8s .3s both;font-weight:800;letter-spacing:.4px;line-height:1.25}
+.brandpane h1 span{color:#F47B20}
+.brandpane .tag{color:#9fb0c9;margin-top:12px;font-size:12px;letter-spacing:2.6px;text-transform:uppercase;animation:fadeup .8s .5s both}
+.brandpane .feats{margin-top:36px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;animation:fadeup .8s .75s both}
+.brandpane .feat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:99px;padding:7px 15px;font-size:12px;color:#c9d4e6;display:flex;gap:7px;align-items:center}
+.brandpane .feat i{color:#F47B20;font-style:normal}
+.formpane{display:flex;align-items:center;justify-content:center;padding:36px 22px}
+.formcard{width:100%;max-width:440px;background:var(--card);border-radius:24px;box-shadow:var(--sh);padding:32px 30px;animation:fadeup .5s both;border:1px solid var(--line)}
+.rolechips{display:flex;gap:8px;flex-wrap:wrap}
+.rolechip{display:flex;align-items:center;gap:7px;padding:9px 14px;border:1.5px solid var(--line);border-radius:99px;background:#fff;font-size:13px;font-weight:700;color:var(--ink2);cursor:pointer;transition:.2s;font-family:inherit}
+.rolechip svg{width:15px;height:15px}
+.rolechip:hover{border-color:var(--brand);color:var(--brand)}
+.rolechip.sel{background:linear-gradient(135deg,var(--brand),var(--brand-d));border-color:var(--brand);color:#fff;box-shadow:0 8px 18px rgba(244,123,32,.32)}
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:12.5px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.fld input,.fld select,.fld textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:14.5px;font-family:inherit;background:#fbfcfe;transition:.2s;outline:none;color:var(--ink)}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--brand);background:#fff;box-shadow:0 0 0 4px rgba(244,123,32,.12)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 18px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand-d));color:#fff;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(244,123,32,.35)}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:#eef1f6;color:var(--ink)}
+.btn.ghost:hover{box-shadow:none;background:#e4e9f1}
+.btn.sm{width:auto;padding:8px 14px;font-size:13px;border-radius:10px}
+.btn.ok{background:linear-gradient(135deg,#22c55e,#15803d)}
+.btn.bad{background:linear-gradient(135deg,#ef4444,#b91c1c)}
+.btn.info{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.tabswitch{display:flex;background:#eef1f6;border-radius:12px;padding:4px;margin:16px 0 20px}
+.tabswitch button{flex:1;padding:10px;border:none;background:transparent;border-radius:9px;font-weight:700;font-size:14px;color:var(--ink2);cursor:pointer;font-family:inherit;transition:.2s}
+.tabswitch button.on{background:#fff;color:var(--brand);box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.photopick{display:flex;align-items:center;gap:16px}
+.photopick .pv{width:72px;height:72px;border-radius:50%;background:#f8fafc;display:flex;align-items:center;justify-content:center;overflow:hidden;border:2px dashed #e3b489;flex:none;color:var(--brand)}
+.photopick .pv img{width:100%;height:100%;object-fit:cover}
+.demoaccounts{margin-top:18px;border-top:1px dashed var(--line);padding-top:13px}
+.demoaccounts p{font-size:11.5px;color:var(--ink2);margin-bottom:8px}
+.demochip{display:inline-block;background:#eef1f6;border-radius:99px;padding:5px 12px;font-size:12px;margin:2px 4px 2px 0;cursor:pointer;transition:.15s}
+.demochip:hover{background:var(--brand-l);color:var(--brand-d)}
+.err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none}
+@media(max-width:900px){
+ .authwrap{grid-template-columns:1fr}
+ .brandpane{padding:36px 20px 26px}
+ .brandpane .biglogo{width:92px;height:92px}
+ .brandpane h1{font-size:20px;margin-top:16px}
+ .brandpane .tag{font-size:10px;letter-spacing:1.6px}
+ .brandpane .feats{display:none}
+ .brandpane .glow{width:280px;height:280px}
+ .formpane{padding:20px 14px 34px;align-items:flex-start}
+}
+
+/* ---------- AI ASSISTANT & MODAL ---------- */
+.aifab{position:fixed;bottom:24px;right:24px;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#F47B20,#d96a14);border:none;color:#fff;cursor:pointer;z-index:180;box-shadow:0 12px 30px rgba(244,123,32,.45);display:flex;align-items:center;justify-content:center;transition:.25s;animation:fabpulse 2.8s infinite}
+.aifab:hover{transform:scale(1.12) rotate(-8deg)}
+@keyframes fabpulse{0%,100%{box-shadow:0 12px 30px rgba(244,123,32,.45)}50%{box-shadow:0 12px 44px rgba(244,123,32,.75)}}
+.aipanel{position:fixed;bottom:98px;right:24px;width:372px;max-width:calc(100vw - 28px);height:530px;max-height:calc(100vh - 140px);background:#fff;border-radius:22px;box-shadow:0 26px 64px rgba(27,36,51,.30);z-index:181;display:flex;flex-direction:column;overflow:hidden;transform:translateY(26px) scale(.95);opacity:0;pointer-events:none;transition:.32s cubic-bezier(.2,1.2,.4,1)}
+.aipanel.open{transform:none;opacity:1;pointer-events:auto}
+.aihead{background:linear-gradient(135deg,#16202f,#2b3a55);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:11px;flex:none}
+.aiava{width:38px;height:38px;border-radius:13px;background:linear-gradient(135deg,#F47B20,#f9a55c);display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 6px 14px rgba(244,123,32,.55);color:#fff}
+.aihead b{font-size:14.5px;display:block}
+.aihead small{font-size:11px;color:#8fe3ae;display:flex;align-items:center;gap:6px}
+.aihead .onl{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 9px #4ade80;animation:blink 2s infinite}
+.aiact{color:#fff;background:rgba(255,255,255,.12);border:none;width:30px;height:30px;border-radius:9px;cursor:pointer;margin-left:auto;font-size:13px}
+.aiact:hover{background:rgba(255,255,255,.22)}
+.aibody{flex:1;overflow-y:auto;padding:16px 14px;background:linear-gradient(180deg,#f8fafc,#edf1f8)}
+.msg{max-width:84%;padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.55;margin-bottom:10px;animation:fadeup .3s both;white-space:pre-line;word-wrap:break-word}
+.msg.ai{background:#fff;border:1px solid var(--line);border-bottom-left-radius:5px;box-shadow:0 3px 10px rgba(27,36,51,.05)}
+.msg.me{background:linear-gradient(135deg,var(--brand),var(--brand-d));color:#fff;margin-left:auto;border-bottom-right-radius:5px}
+.typing{display:inline-flex;gap:4px;padding:4px 2px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#b6c0d0;animation:ty 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes ty{40%{transform:translateY(-5px);background:var(--brand)}}
+.aichips{display:flex;gap:7px;flex-wrap:wrap;padding:9px 12px;background:#fff;border-top:1px solid var(--line);flex:none}
+.aichips button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--ink2);cursor:pointer;font-family:inherit;transition:.15s}
+.aichips button:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-l)}
+.aiinput{display:flex;gap:9px;padding:11px 12px;background:#fff;border-top:1px solid var(--line);flex:none}
+.aiinput input{flex:1;padding:11px 15px;border:1.5px solid var(--line);border-radius:99px;font-size:13.5px;outline:none;font-family:inherit}
+.aiinput input:focus{border-color:var(--brand);box-shadow:0 0 0 4px rgba(244,123,32,.12)}
+.aiinput button{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--brand),var(--brand-d));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;transition:.2s}
+.aiinput button:hover{transform:scale(1.08)}
+.modal{position:fixed;inset:0;background:rgba(15,22,36,.55);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:210;padding:18px}
+.modal.open{display:flex}
+.mcard{background:#fff;border-radius:20px;padding:26px;width:100%;max-width:400px;animation:pop .4s cubic-bezier(.2,1.4,.4,1) both}
+@media(max-width:900px){.aipanel{bottom:90px;right:12px;left:12px;width:auto;height:60vh}.aifab{bottom:86px;right:14px;width:54px;height:54px}}
+
+/* ---------- APP SHELL ---------- */
+#app{display:none}
+#app.on{display:block}
+.shell{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.side{background:#16202f;color:#c7d2e4;padding:22px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side .sbrand{display:flex;align-items:center;gap:10px;padding:0 10px 20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px}
+.side .sbrand b{color:#fff;font-size:16px;display:block;line-height:1.15}
+.side .sbrand small{font-size:10.5px;color:#8b9bb5;letter-spacing:.6px}
+.navi{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:11px;color:#aebdd4;font-size:14px;font-weight:600;cursor:pointer;transition:.18s;margin-bottom:4px;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.navi:hover{background:rgba(255,255,255,.06);color:#fff}
+.navi.on{background:linear-gradient(135deg,var(--brand),var(--brand-d));color:#fff;box-shadow:0 8px 18px rgba(244,123,32,.35)}
+.navi svg{flex:none}
+.sfoot{margin-top:auto;padding:14px 10px 0;border-top:1px solid rgba(255,255,255,.08)}
+.suser{display:flex;align-items:center;gap:10px}
+.suser img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#2b3a55}
+.suser .av{width:38px;height:38px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+.suser b{color:#fff;font-size:13.5px;display:block}
+.suser small{font-size:11px;color:#8b9bb5}
+.main{padding:26px 30px 60px;min-width:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:24px;flex-wrap:wrap}
+.topbar h2{font-size:22px}
+.topbar .crumb{color:var(--ink2);font-size:13px;margin-top:3px}
+.topright{display:flex;align-items:center;gap:12px}
+.bell{position:relative;width:42px;height:42px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s}
+.bell:hover{border-color:var(--brand)}
+.bell .bdg{position:absolute;top:-5px;right:-5px;background:var(--bad);color:#fff;font-size:10px;font-weight:800;min-width:18px;height:18px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 4px}
+
+/* cards */
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:0 4px 14px rgba(27,36,51,.04);animation:fadeup .45s both}
+.stat{display:flex;align-items:center;gap:14px}
+.stat .ic{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.stat b{font-size:24px;display:block;line-height:1.1}
+.stat small{color:var(--ink2);font-size:12.5px}
+.c-orange{background:var(--brand-l);color:var(--brand)}
+.c-blue{background:#e3ecff;color:var(--info)}
+.c-green{background:#dcf5e5;color:var(--ok)}
+.c-red{background:#fde3e3;color:var(--bad)}
+.c-amber{background:#fdf0d7;color:var(--warn)}
+.c-violet{background:#ede9fe;color:#7c3aed}
+.card h3{font-size:15.5px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.card h3 small{font-weight:500;color:var(--ink2);font-size:12px}
+.bump{animation:bump .35s}
+@keyframes bump{30%{transform:scale(1.12)}}
+
+/* requests */
+.req{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;background:#fff;transition:.2s;animation:fadeup .4s both}
+.req:hover{box-shadow:var(--sh);border-color:#d7deeb}
+.req .rt{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.req .rt b{font-size:15px}
+.req .meta{color:var(--ink2);font-size:12.5px;margin-top:4px;display:flex;gap:12px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:99px;font-size:11.5px;font-weight:800;letter-spacing:.3px}
+.p-Pending{background:#fdf0d7;color:#b45309}.p-Approved{background:#e3ecff;color:#1d4ed8}
+.p-Processing{background:#ede9fe;color:#6d28d9}.p-Completed{background:#dcf5e5;color:#15803d}
+.p-Rejected{background:#fde3e3;color:#b91c1c}
+.steps{display:flex;align-items:center;gap:0;margin:16px 0 6px}
+.step{flex:1;text-align:center;position:relative}
+.step .dot2{width:26px;height:26px;border-radius:50%;background:#e6e9f0;color:#94a3b8;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;position:relative;z-index:2;border:3px solid #fff}
+.step small{display:block;font-size:10.5px;color:var(--ink2);margin-top:5px;font-weight:700}
+.step::before{content:"";position:absolute;top:13px;left:-50%;width:100%;height:3px;background:#e6e9f0;z-index:1}
+.step:first-child::before{display:none}
+.step.done .dot2{background:var(--ok);color:#fff}
+.step.done::before{background:var(--ok)}
+.step.now .dot2{background:var(--brand);color:#fff;box-shadow:0 0 0 5px rgba(244,123,32,.2);animation:pulse 1.6s infinite}
+.step.now small{color:var(--brand-d)}
+@keyframes pulse{50%{box-shadow:0 0 0 9px rgba(244,123,32,.08)}}
+.step.rej .dot2{background:var(--bad);color:#fff}
+.req .desc{color:var(--ink2);font-size:13.5px;margin-top:8px;background:#f8fafc;border-radius:10px;padding:10px 12px}
+.req .acts{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.stars{display:flex;gap:5px;margin:6px 0 12px}
+.stars button{background:none;border:none;cursor:pointer;padding:2px;transition:transform .15s}
+.stars button:hover{transform:scale(1.25)}
+.stars svg{width:30px;height:30px}
+.stars .on path{fill:#f59e0b;stroke:#f59e0b}
+.stars .off path{fill:#e6e9f0;stroke:#cbd5e1}
+
+/* new request */
+.catgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.catcard{border:2px solid var(--line);border-radius:15px;padding:18px 14px;cursor:pointer;transition:.2s;background:#fff;text-align:left}
+.catcard:hover{transform:translateY(-3px);border-color:var(--brand)}
+.catcard.sel{border-color:var(--brand);background:var(--brand-l);box-shadow:0 10px 22px rgba(244,123,32,.18)}
+.catcard .ic{width:44px;height:44px;border-radius:12px;background:var(--brand-l);color:var(--brand);display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.catcard.sel .ic{background:var(--brand);color:#fff}
+.catcard b{font-size:14px;display:block}
+.catcard small{color:var(--ink2);font-size:11.5px}
+.subs{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.subchip{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:8px 15px;font-size:13px;cursor:pointer;transition:.15s;font-family:inherit}
+.subchip:hover{border-color:var(--brand)}
+.subchip.sel{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
+.notif{display:flex;gap:12px;padding:13px 14px;border-radius:13px;background:#fff;border:1px solid var(--line);margin-bottom:10px;animation:fadeup .35s both}
+.notif .ni{width:38px;height:38px;border-radius:11px;flex:none;display:flex;align-items:center;justify-content:center}
+.notif b{font-size:13.5px;display:block}
+.notif p{font-size:12.5px;color:var(--ink2)}
+.notif time{font-size:11px;color:#98a4b8;margin-left:auto;flex:none}
+table.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th{text-align:left;padding:10px 12px;color:var(--ink2);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--line)}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--line)}
+.tbl tr:hover td{background:#fafbfd}
+.twrap{overflow-x:auto}
+.empty{text-align:center;padding:44px 16px;color:var(--ink2)}
+.empty .ei{width:70px;height:70px;border-radius:20px;background:#eef1f6;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#9aa7bd}
+.sechead{display:flex;align-items:center;justify-content:space-between;margin:26px 0 14px;flex-wrap:wrap;gap:10px}
+.sechead h3{font-size:17px}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(30px);background:#16202f;color:#fff;padding:13px 22px;border-radius:13px;font-size:14px;font-weight:600;box-shadow:0 14px 30px rgba(0,0,0,.3);opacity:0;transition:.35s;z-index:300;display:flex;align-items:center;gap:9px;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.bnav{display:none}
+.profcard{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.profcard img{width:92px;height:92px;border-radius:24px;object-fit:cover;background:var(--brand-l)}
+.profcard .av{width:92px;height:92px;border-radius:24px;background:linear-gradient(135deg,var(--brand),var(--brand-d));display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:800;color:#fff}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:18px}
+.kv .k{background:#f8fafc;border-radius:12px;padding:11px 14px}
+.kv .k small{color:var(--ink2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;display:block}
+.kv .k b{font-size:14px}
+.progress{height:8px;background:#eef1f6;border-radius:8px;overflow:hidden}
+.progress i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--brand),#f9a55c);transition:width .8s ease}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:26px 28px;background:linear-gradient(120deg,#16202f 0%,#22314b 55%,#33456b 100%);color:#fff;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;box-shadow:0 16px 38px rgba(22,32,47,.28);animation:fadeup .45s both}
+.hero::before{content:"";position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(244,123,32,.38),transparent 65%);top:-110px;right:-60px}
+.hero::after{content:"";position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(126,164,255,.18),transparent 65%);bottom:-90px;left:28%}
+.hero .hleft{position:relative;z-index:2;min-width:0}
+.hero small{color:#8b9bb5;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.hero h2{font-size:clamp(20px,3.2vw,27px);margin:6px 0 8px;font-weight:800}
+.hero p{color:#c3cede;font-size:13.5px}
+.hero p b{color:#F47B20}
+.hbtns{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.hbtn{border:none;background:linear-gradient(135deg,var(--brand),var(--brand-d));color:#fff;padding:10px 18px;border-radius:99px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;box-shadow:0 8px 18px rgba(244,123,32,.35);transition:.2s}
+.hbtn:hover{transform:translateY(-2px)}
+.hbtn.o{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);box-shadow:none}
+.hlogo{position:relative;z-index:2;flex:none;filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));animation:pop .8s .2s both}
+.tipbar{display:flex;gap:12px;align-items:center;background:linear-gradient(120deg,#fff7ef,#fff);border:1px solid #f5dfc8;border-radius:16px;padding:13px 16px;margin-bottom:18px;font-size:13px;color:var(--ink2);animation:fadeup .45s .1s both}
+.tipbar b{color:var(--ink)}
+.tipic{width:36px;height:36px;border-radius:11px;background:var(--brand-l);display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}
+.card.hov{transition:.22s;position:relative}
+.card.hov:hover{transform:translateY(-4px);box-shadow:var(--sh);border-color:#d7deeb}
+.goarrow{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:#c2ccdb;font-size:18px;transition:.2s}
+.card.hov:hover .goarrow{color:var(--brand);transform:translateY(-50%) translateX(4px)}
+@media(max-width:700px){.hero{flex-direction:column;align-items:flex-start}.hlogo{align-self:flex-end;margin-top:-64px;opacity:.92}}
+.bell .bdg{animation:pulse 1.8s infinite}
+
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .side{display:none}
+  .main{padding:18px 16px 96px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:1fr 1fr}
+  .bnav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:8px 6px calc(8px + env(safe-area-inset-bottom));z-index:100;box-shadow:0 -8px 24px rgba(27,36,51,.08)}
+  .bnav button{flex:1;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#8b98ad;padding:6px 2px;border-radius:10px;cursor:pointer;font-family:inherit}
+  .bnav button.on{color:var(--brand)}
+  .topbar h2{font-size:19px}
+}
+@media print{
+  .side,.bnav,.topright,.btn,.acts,.bell{display:none!important}
+  .main{padding:0}.card{box-shadow:none;border:none}
+  body{background:#fff}
+}
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="uwrap" id="splashLogo">
+    <svg class="uca-u" viewBox="0 0 561 528" preserveAspectRatio="xMidYMid meet"><path fill="#F47B20" d="M0 0 H203 V262 H364 V0 H561 V457 L493 528 H68 L0 457 Z"/><rect x="124" y="262" width="312" height="195" fill="#fff"/><g stroke="#1b2433" stroke-width="8" fill="none" stroke-linecap="round"><path d="M186 296 H152 V348"/><path d="M150 348 L208 365"/><path d="M208 365 L304 435"/><path d="M236 340 H280 L304 365 H378"/><path d="M350 365 H378 V315"/><path d="M150 418 H210 L242 436"/><path d="M242 436 H304"/><path d="M304 435 H360"/></g><g fill="#fff" stroke="#1b2433" stroke-width="8"><circle cx="186" cy="296" r="16"/><circle cx="150" cy="348" r="16"/><circle cx="208" cy="365" r="16"/><circle cx="324" cy="361" r="16"/><circle cx="395" cy="321" r="16"/><circle cx="150" cy="418" r="16"/><circle cx="242" cy="436" r="16"/><circle cx="412" cy="436" r="16"/></g></svg>
+  </div>
+  <h1>University College of Anuradhapura</h1>
+  <p>UniServe UCA &middot; Smart Academic Services</p>
+  <div class="bar"><i></i></div>
+</div>
+
+<!-- WELCOME -->
+<div id="welcome" style="display:none">
+  <span class="spark" style="top:18%;left:20%"></span>
+  <span class="spark" style="top:26%;right:18%;animation-delay:.5s"></span>
+  <span class="spark" style="bottom:24%;left:28%;animation-delay:1s"></span>
+  <span class="spark" style="bottom:30%;right:26%;animation-delay:1.4s"></span>
+  <div class="uwrap" id="welcomeLogo"><svg class="uca-u" viewBox="0 0 561 528" preserveAspectRatio="xMidYMid meet"><path fill="#F47B20" d="M0 0 H203 V262 H364 V0 H561 V457 L493 528 H68 L0 457 Z"/><rect x="124" y="262" width="312" height="195" fill="#fff"/><g stroke="#1b2433" stroke-width="8" fill="none" stroke-linecap="round"><path d="M186 296 H152 V348"/><path d="M150 348 L208 365"/><path d="M208 365 L304 435"/><path d="M236 340 H280 L304 365 H378"/><path d="M350 365 H378 V315"/><path d="M150 418 H210 L242 436"/><path d="M242 436 H304"/><path d="M304 435 H360"/></g><g fill="#fff" stroke="#1b2433" stroke-width="8"><circle cx="186" cy="296" r="16"/><circle cx="150" cy="348" r="16"/><circle cx="208" cy="365" r="16"/><circle cx="324" cy="361" r="16"/><circle cx="395" cy="321" r="16"/><circle cx="150" cy="418" r="16"/><circle cx="242" cy="436" r="16"/><circle cx="412" cy="436" r="16"/></g></svg></div>
+  <h2>Welcome to <span>University College<br>of Anuradhapura</span></h2>
+  <p>Smart Academic Service &amp; Governance Platform</p>
+  <div class="who" id="welcomeWho"></div>
+</div>
+
+<!-- AUTH -->
+<div id="auth" style="display:none">
+  <div class="authwrap"><div class="authcard" id="authCard"></div></div>
+</div>
+
+<!-- APP -->
+<div id="app"><div class="shell" id="shell"></div></div>
+<div class="toast" id="toast"></div>
+<!-- AI ASSISTANT -->
+<button class="aifab" id="aiFab" onclick="toggleAI()"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></button>
+<div class="aipanel" id="aiPanel">
+ <div class="aihead">
+  <div class="aiava"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.2 6.6L21 11l-6.8 2.4L12 20l-2.2-6.6L3 11l6.8-2.4z"/></svg></div>
+  <div><b>UniServe AI Assistant</b><small><span class="onl"></span> Online · replies instantly</small></div>
+  <button class="aiact" onclick="toggleAI()">✕</button>
+ </div>
+ <div class="aibody" id="aiBody"></div>
+ <div class="aichips" id="aiChips"></div>
+ <div class="aiinput">
+  <input id="aiIn" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')aiSend()">
+  <button onclick="aiSend()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg></button>
+ </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div class="modal" id="fpModal">
+ <div class="mcard">
+  <h3 style="font-size:17px;margin-bottom:6px">🔑 Password Recovery</h3>
+  <p style="color:var(--ink2);font-size:13px;margin-bottom:16px">Enter your username or email — we'll find your account.</p>
+  <div class="err" id="fperr"></div>
+  <div id="fpStep1">
+   <div class="fld"><input id="fp_q" placeholder="Username or email address" onkeydown="if(event.key==='Enter')fpFind()"></div>
+   <button class="btn" onclick="fpFind()">Find My Account</button>
+   <button class="btn ghost" style="margin-top:10px" onclick="fpClose()">Cancel</button>
+  </div>
+  <div id="fpStep2" style="display:none">
+   <div style="background:var(--brand-l);border-radius:13px;padding:16px;text-align:center;margin-bottom:14px">
+    <small style="color:var(--ink2);font-size:11.5px">ACCOUNT FOUND · YOUR PASSWORD</small>
+    <div id="fpPass" style="font-size:22px;font-weight:800;color:var(--brand-d);letter-spacing:1px;margin:5px 0"></div>
+    <small style="color:#b45309;font-size:11px">⚠ Demo mode — in production this is sent via OTP to your email.</small>
+   </div>
+   <button class="btn ghost" onclick="fpClose()">Close</button>
+  </div>
+ </div>
+</div>
+
+
+<script>
+/* ================= DATA ================= */
+const DEPTS=[
+ "Electronic Technology","Electrical Technology",
+ "Aquaculture & Aquatic Resources Management","Post Harvest Technology",
+ "Quantity Serving Technology","Building Service Technology",
+ "Travel & Tourism Management","Hospitality Management"];
+const CATS={
+ "Document Requests":{icon:"doc",subs:["Result Sheet","Character Certificate","Student Confirmation Letter","Transcript"],sla:3,desc:"Official letters & certificates"},
+ "Appointments":{icon:"cal",subs:["Director Meeting","HOD Discussion","Counselor Meeting"],sla:2,desc:"Book meetings with staff"},
+ "Academic Issues":{icon:"book",subs:["Module Registration","Attendance Issue","Exam Timetable Clash"],sla:5,desc:"Registration, attendance & exams"},
+ "General / Facilities":{icon:"wrench",subs:["Laboratory Issue","Hostel / Canteen Issue","LMS Issue"],sla:4,desc:"Labs, hostel, canteen & LMS"}
+};
+const STATUSES=["Pending","Approved","Processing","Completed"];
+const ROLE_NAV={
+ Student:[["home","Home","home"],["new","New Request","plus"],["track","Track Requests","route"],["notif","Notifications","bell"],["profile","Profile","user"]],
+ Lecturer:[["home","Dashboard","home"],["work","Assigned Requests","route"],["notif","Notifications","bell"],["profile","Profile","user"]],
+ HOD:[["home","Dashboard","home"],["work","Manage Requests","route"],["reports","Reports","chart"],["notif","Notifications","bell"],["profile","Profile","user"]],
+ Admin:[["home","Dashboard","home"],["users","Users","users"],["work","All Requests","route"],["reports","Reports","chart"],["notif","Notifications","bell"],["profile","Profile","user"]]
+};
+const ICONS={
+ home:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 10v10h14V10"/></svg>',
+ plus:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ route:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8 19h7a4 4 0 0 0 0-8H9a4 4 0 0 1 0-8h7"/></svg>',
+ bell:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg>',
+ user:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+ users:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5.5 6.5-5.5s5.5 2 6.5 5.5"/><circle cx="17.5" cy="9" r="2.8"/><path d="M17 14.7c2.6.3 4 2 4.7 4.3"/></svg>',
+ chart:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ doc:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>',
+ cal:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 9h18"/></svg>',
+ book:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M20 17v5H6.5a2.5 2.5 0 0 1 0-5"/></svg>',
+ wrench:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a4.5 4.5 0 0 0-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 0 0 6-6L14 13l-3-3z"/></svg>',
+ check:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg>',
+ x:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+ clock:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ down:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>',
+ grad:'<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 10 12 5 2 10l10 5z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg>'
+};
+const starSVG=on=>'<svg class="'+(on?'on':'off')+'" viewBox="0 0 24 24"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6.1 3.6 1.4-6.8L2.2 9.1l6.9-.8z"/></svg>';
+const LOGO='<svg viewBox="0 0 561 528" style="width:34px;height:34px;flex:none"><path fill="#F47B20" d="M0 0 H203 V262 H364 V0 H561 V457 L493 528 H68 L0 457 Z"/><rect x="124" y="262" width="312" height="195" fill="#fff"/><g stroke="#1b2433" stroke-width="8" fill="none" stroke-linecap="round"><path d="M186 296 H152 V348"/><path d="M150 348 L208 365"/><path d="M208 365 L304 435"/><path d="M236 340 H280 L304 365 H378"/><path d="M350 365 H378 V315"/><path d="M150 418 H210 L242 436"/><path d="M242 436 H304"/><path d="M304 435 H360"/></g><g fill="#fff" stroke="#1b2433" stroke-width="8"><circle cx="186" cy="296" r="16"/><circle cx="150" cy="348" r="16"/><circle cx="208" cy="365" r="16"/><circle cx="324" cy="361" r="16"/><circle cx="395" cy="321" r="16"/><circle cx="150" cy="418" r="16"/><circle cx="242" cy="436" r="16"/><circle cx="412" cy="436" r="16"/></g></svg>';
+
+/* ================= STATE ================= */
+const KEY="ucaserve_v2";
+let S=null;
+function save(){localStorage.setItem(KEY,JSON.stringify(S))}
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+ if(!S||!S.users){seed();save()}}
+function daysAgo(n){return Date.now()-n*864e5}
+function seed(){
+ const mk=(i,st,cat,sub,ago,extra)=>Object.assign({id:"REQ-"+(2400+i),studentId:"u_demo",studentName:"Rasangika W.M.C.C.R.",regNo:"UCA/ETN/F/24/21",dept:DEPTS[0],category:cat,sub:sub,desc:"Request submitted via UniServe UCA.",status:st,reason:"",createdAt:daysAgo(ago),due:daysAgo(ago)+CATS[cat].sla*864e5,rating:0,feedback:"",hist:[{s:"Pending",t:daysAgo(ago)}]},extra);
+ S={users:[
+  {id:"u_admin",name:"System Administrator",username:"admin",password:"UCA#Admin2026",email:"admin@uca.ac.lk",regNo:"UCA/ADM/01",dept:"",role:"Admin",photo:"",active:true},
+  {id:"u_hod",name:"Dr. K. Perera",username:"hod",password:"hod@2026",email:"hod.etn@uca.ac.lk",regNo:"UCA/ETN/HOD",dept:DEPTS[0],role:"HOD",photo:"",active:true},
+  {id:"u_lec",name:"Mr. S. Fernando",username:"lecturer",password:"lec@2026",email:"s.fernando@uca.ac.lk",regNo:"UCA/ETN/L01",dept:DEPTS[0],role:"Lecturer",photo:"",active:true},
+  {id:"u_demo",name:"W.M.C.C.R. Rasangika",username:"rasangika",password:"student@2026",email:"rasangika@stu.uca.ac.lk",regNo:"UCA/ETN/F/24/21",dept:DEPTS[0],role:"Student",photo:"",active:true}
+ ],
+ requests:[
+  mk(1,"Completed","Document Requests","Result Sheet",12,{rating:5,feedback:"Very fast service. Received the sheet within two days!",hist:[{s:"Pending",t:daysAgo(12)},{s:"Approved",t:daysAgo(11)},{s:"Processing",t:daysAgo(11)},{s:"Completed",t:daysAgo(10)}]}),
+  mk(2,"Completed","Appointments","HOD Discussion",6,{rating:4,feedback:"Meeting confirmed quickly.",hist:[{s:"Pending",t:daysAgo(6)},{s:"Approved",t:daysAgo(6)},{s:"Processing",t:daysAgo(5)},{s:"Completed",t:daysAgo(5)}]}),
+  mk(3,"Processing","Academic Issues","Module Registration",3,{hist:[{s:"Pending",t:daysAgo(3)},{s:"Approved",t:daysAgo(2)},{s:"Processing",t:daysAgo(2)}]}),
+  mk(4,"Pending","General / Facilities","LMS Issue",0,{}),
+  mk(5,"Rejected","Appointments","Director Meeting",8,{reason:"Please select an available time slot next week and resubmit.",hist:[{s:"Pending",t:daysAgo(8)},{s:"Rejected",t:daysAgo(7)}]}),
+  mk(6,"Pending","Document Requests","Character Certificate",0,{}),
+ ],
+ notifs:[{id:1,uid:"u_demo",title:"Request REQ-2404 submitted",body:"Your LMS Issue request was sent to Electronic Technology.",t:Date.now()-36e5,read:false},{id:2,uid:"u_demo",title:"Request REQ-2403 is Processing",body:"Module Registration is now being processed.",t:Date.now()-864e5,read:false}],
+ session:null};
+}
+
+/* ================= HELPERS ================= */
+const $=q=>document.querySelector(q);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const me=()=>S.users.find(u=>u.id===S.session);
+const fdate=t=>new Date(t).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+const ftime=t=>new Date(t).toLocaleString("en-GB",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+function isOverdue(r){return !["Completed","Rejected"].includes(r.status)&&Date.now()>r.due}
+function toast(msg){const t=$("#toast");t.innerHTML='<span style="color:#F47B20">✦</span> '+esc(msg);t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),2600)}
+function notify(uid,title,body){S.notifs.unshift({id:Date.now(),uid,title,body,t:Date.now(),read:false});if(S.session===uid)beep();save();renderShell()}
+function beep(){try{if(navigator.vibrate)navigator.vibrate([130,70,130])}catch(e){}try{const C=beep.c||(beep.c=new (window.AudioContext||window.webkitAudioContext)());if(C.state==="suspended")C.resume();const t=C.currentTime;const o=C.createOscillator(),g=C.createGain();o.connect(g);g.connect(C.destination);o.type="sine";o.frequency.setValueAtTime(920,t);o.frequency.exponentialRampToValueAtTime(1380,t+.12);g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.16,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.start(t);o.stop(t+.55);}catch(e){}}
+function avatar(u,sz){if(u.photo)return '<img src="'+u.photo+'" style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;object-fit:cover">';return '<div class="av" style="width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.42)+'px">'+esc(u.name[0])+'</div>'}
+function addHist(r,s){r.hist.push({s:s,t:Date.now()})}
+function setStatus(r,st,reason){r.status=st;if(reason)r.reason=reason;addHist(r,st);notify(r.studentId,"Request "+r.id+" "+st.toLowerCase(),r.category+" — "+r.sub+(reason?" · Reason: "+reason:""));}
+
+/* ================= AUTH FLOW ================= */
+let authRole="Student",authMode="login",tempPhoto="";
+const ADMIN={username:"admin",password:"UCA#Admin2026"};
+const ROLE_META={
+ Student:{icon:"grad",desc:"Submit requests, track status and book appointments"},
+ Lecturer:{icon:"user",desc:"View and process requests assigned to you"},
+ HOD:{icon:"chart",desc:"Manage and route your department's requests"},
+ Admin:{icon:"wrench",desc:"Restricted — pre-authorized access only"}
+};
+const LOGO_BIG='<svg viewBox="0 0 561 528" style="width:100%;height:100%"><path fill="#F47B20" d="M0 0 H203 V262 H364 V0 H561 V457 L493 528 H68 L0 457 Z"/><rect x="124" y="262" width="312" height="195" fill="#fff"/><g stroke="#1b2433" stroke-width="8" fill="none" stroke-linecap="round"><path d="M186 296 H152 V348"/><path d="M150 348 L208 365"/><path d="M208 365 L304 435"/><path d="M236 340 H280 L304 365 H378"/><path d="M350 365 H378 V315"/><path d="M150 418 H210 L242 436"/><path d="M242 436 H304"/><path d="M304 435 H360"/></g><g fill="#fff" stroke="#1b2433" stroke-width="8"><circle cx="186" cy="296" r="16"/><circle cx="150" cy="348" r="16"/><circle cx="208" cy="365" r="16"/><circle cx="324" cy="361" r="16"/><circle cx="395" cy="321" r="16"/><circle cx="150" cy="418" r="16"/><circle cx="242" cy="436" r="16"/><circle cx="412" cy="436" r="16"/></g></svg>';
+function showAuth(){$("#auth").style.display="block";$("#aiFab").style.display="none";$("#aiPanel").classList.remove("open");aiOpen=false;renderAuth()}
+function brandPane(){
+ const nodes=[[8,20,0,0],[17,62,.7,1],[29,12,1.3,0],[43,82,1.9,1],[56,28,.4,0],[69,70,1.1,1],[80,18,1.6,0],[91,72,2.2,1],[23,88,2.6,0],[64,90,.9,1]];
+ return `<div class="brandpane">
+  <div class="glow"></div><div class="glow g2"></div>
+  <svg class="circuit" viewBox="0 0 100 100" preserveAspectRatio="none">
+   <path d="M5 20 H30 V40 H55 M95 14 H70 V35 H55 M8 85 H35 V65 H60 M93 82 H66 V58 H60 M55 40 V35 M55 65 V58" stroke="#fff" stroke-width=".45" fill="none"/>
+  </svg>
+  ${nodes.map(n=>`<span class="cnode ${n[3]?'b':''}" style="left:${n[0]}%;top:${n[1]}%;animation-delay:${n[2]}s;${n[3]?'animation-name:blinkb':''}"></span>`).join("")}
+  <div class="biglogo">${logoBigHTML()}</div>
+  <h1>University College of<br><span>Anuradhapura</span></h1>
+  <div class="tag">UniServe UCA · Smart Academic Service &amp; Governance Platform</div>
+  <div class="feats"><span class="feat"><i>✦</i> Request Tracking</span><span class="feat"><i>✦</i> SLA Monitoring</span><span class="feat"><i>✦</i> 8 Departments</span><span class="feat"><i>✦</i> Secure &amp; Encrypted</span></div>
+ </div>`;
+}
+function formPane(){
+ const isAdmin=authRole==="Admin";
+ if(isAdmin)authMode="login";
+ const isLogin=authMode==="login";
+ const idLabel=authRole==="Student"?"Registration No":authRole==="Lecturer"?"Lecturer ID":authRole==="HOD"?"Staff ID":"ID Number";
+ const idPh=authRole==="Student"?"UCA/ETN/F/24/21":"UCA/ETN/L01";
+ let fields="";
+ if(!isLogin){
+  fields+=`
+  <div class="fld"><label>Full Name</label><input id="f_name" placeholder="e.g. W.M.C.C.R. Rasangika"></div>
+  <div class="grid g2" style="gap:10px">
+   <div class="fld"><label>Email Address</label><input id="f_email" type="email" placeholder="name@uca.ac.lk"></div>
+   <div class="fld"><label>${idLabel}</label><input id="f_reg" placeholder="${idPh}"></div>
+  </div>
+  <div class="fld"><label>${authRole==="HOD"?"Department (Head of)":"Department"}</label><select id="f_dept"><option value="">— Select Department —</option>${DEPTS.map(d=>"<option>"+d+"</option>").join("")}</select></div>
+  <div class="fld"><label>Profile Photo <span style="font-weight:400;color:#98a4b8">(optional)</span></label>
+   <div class="photopick"><div class="pv" id="pv">${ICONS.user}</div>
+   <div><label class="btn ghost sm" style="cursor:pointer">Upload Photo<input type="file" accept="image/*" hidden onchange="pickPhoto(this)"></label>
+   <div style="font-size:11px;color:#98a4b8;margin-top:7px">JPG or PNG · max 2MB</div></div></div></div>`;
+ }
+ fields+=`
+ <div class="fld"><label>Username</label><input id="f_user" placeholder="Enter username" autocomplete="username"></div>
+ <div class="${isLogin?'':'grid g2'}" style="gap:10px">
+  <div class="fld"><label>Password</label><input id="f_pass" type="password" placeholder="••••••••" autocomplete="${isLogin?'current-password':'new-password'}" onkeydown="if(event.key==='Enter')doAuth()"></div>
+  ${!isLogin?`<div class="fld"><label>Confirm Password</label><input id="f_pass2" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuth()"></div>`:""}
+ </div>`;
+ return `<div class="formpane"><div class="formcard">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">${logoHTML(34)}<div><b style="font-size:15px">UniServe UCA</b><br><small style="color:var(--ink2);font-size:11px">Student Request &amp; Service Management</small></div></div>
+  <div class="rolechips">${Object.keys(ROLE_META).map(r=>`<button class="rolechip ${authRole===r?'sel':''}" onclick="authRole='${r}';renderAuth()">${ICONS[ROLE_META[r].icon]}${r}</button>`).join("")}</div>
+  <h2 style="font-size:20px;margin:20px 0 4px">${isLogin?"Welcome back":"Create account"} <span style="color:var(--brand)">· ${authRole}</span></h2>
+  <p style="color:var(--ink2);font-size:13px;margin-bottom:16px">${isLogin?(isAdmin?"Sign in with authorized admin credentials":"Sign in to access your dashboard"):ROLE_META[authRole].desc}</p>
+  <div class="err" id="aerr"></div>
+  <div class="tabswitch"><button class="${isLogin?'on':''}" onclick="authMode='login';renderAuth()">Login</button><button class="${!isLogin?'on':''}" ${isAdmin?'disabled style="opacity:.45;cursor:not-allowed"':''} onclick="${isAdmin?"toast('Admin accounts are pre-authorized — sign up is not available')":"authMode='signup';renderAuth()"}">Sign Up</button></div>
+  ${fields}
+  <button class="btn" onclick="doAuth()">${isLogin?(isAdmin?"Admin Login →":"Login →"):"Create Account →"}</button>
+  <div style="text-align:center;margin-top:13px"><button style="background:none;border:none;color:var(--brand);font-weight:700;font-size:13px;cursor:pointer;font-family:inherit" onclick="openFP()">Forgot password?</button></div>
+  <div class="demoaccounts"><p>Demo access · ${authRole} role:</p>${demoChip()}</div>
+
+ </div></div>`;
+}
+function demoChip(){
+ const map={Admin:["admin",ADMIN.password],HOD:["hod","hod@2026"],Lecturer:["lecturer","lec@2026"],Student:["rasangika","student@2026"]};
+ const c=map[authRole];
+ return `<span class="demochip" onclick="fillDemo('${c[0]}','${c[1]}')">${c[0]} · ${c[1]}</span>`;
+}
+function renderAuth(){$("#auth").innerHTML='<div class="authwrap">'+brandPane()+formPane()+'</div>'}
+function fillDemo(u,pw){renderAuth();$("#f_user").value=u;$("#f_pass").value=pw;toast("Demo credentials filled — press Login")}
+function pickPhoto(inp){const f=inp.files[0];if(!f)return;if(f.size>2*1024*1024)return toast("Photo must be under 2MB");const rd=new FileReader();rd.onload=e=>{tempPhoto=e.target.result;$("#pv").innerHTML='<img src="'+tempPhoto+'">'};rd.readAsDataURL(f)}
+function aerr(m){const e=$("#aerr");e.textContent=m;e.style.display="block"}
+function doAuth(){
+ const un=$("#f_user").value.trim(),pw=$("#f_pass").value;
+ if(authMode==="signup"){
+  const name=$("#f_name").value.trim(),email=$("#f_email").value.trim(),reg=$("#f_reg").value.trim(),dept=$("#f_dept").value,pw2=$("#f_pass2").value;
+  if(!name||!email||!reg||!dept||!un||!pw||!pw2)return aerr("Please fill in all fields.");
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return aerr("Please enter a valid email address.");
+  if(pw.length<6)return aerr("Password must be at least 6 characters.");
+  if(pw!==pw2)return aerr("Passwords do not match. Please re-check.");
+  if(S.users.some(x=>x.username.toLowerCase()===un.toLowerCase()))return aerr("Username already taken. Please try another.");
+  const usr={id:"u_"+Date.now(),name,username:un,password:pw,email,regNo:reg,dept,role:authRole,photo:tempPhoto,active:true};
+  S.users.push(usr);save();
+  toast("Account created! Please login with your new credentials ✓");
+  authMode="login";renderAuth();$("#f_user").value=un;
+  return;
+ }
+ if(authRole==="Admin"){
+  if(un.toLowerCase()!==ADMIN.username||pw!==ADMIN.password)return aerr("Access denied. Admin credentials are restricted to the authorized administrator.");
+  const u=S.users.find(x=>x.role==="Admin");
+  S.session=u.id;save();enterApp(u);return;
+ }
+ const u=S.users.find(x=>x.username.toLowerCase()===un.toLowerCase()&&x.password===pw);
+ if(!u)return aerr("Invalid username or password.");
+ if(!u.active)return aerr("This account has been deactivated. Contact the administrator.");
+ if(u.role!==authRole)return aerr("This account is registered as "+u.role+". Please select the correct role.");
+ S.session=u.id;save();enterApp(u);
+}
+function enterApp(u){
+ $("#auth").style.display="none";
+ $("#app").classList.add("on");
+ $("#aiFab").style.display="flex";setChipsFor();
+ renderShell();
+ window.scrollTo(0,0);
+}
+function logout(){S.session=null;save();$("#app").classList.remove("on");authMode="login";tempPhoto="";showAuth()}
+
+/* ================= SHELL / ROUTER ================= */
+let screen="home";
+function renderShell(){
+ const u=me();if(!u)return;
+ const nav=ROLE_NAV[u.role];
+ if(!nav.some(n=>n[0]===screen))screen="home";
+ const unread=S.notifs.filter(n=>n.uid===u.id&&!n.read).length;
+ $("#shell").innerHTML=`
+ <aside class="side">
+  <div class="sbrand">${logoHTML(34)}<div><b>UniServe UCA</b><small>UNIVERSITY COLLEGE OF ANURADHAPURA</small></div></div>
+  ${nav.map(n=>`<button class="navi ${screen===n[0]?'on':''}" onclick="go('${n[0]}')">${ICONS[n[2]]}<span>${n[1]}</span>${n[0]==='notif'&&unread?'<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:800;border-radius:99px;padding:2px 7px">'+unread+'</span>':''}</button>`).join("")}
+  <div class="sfoot"><div class="suser">${u.photo?'<img src="'+u.photo+'">':'<div class="av">'+esc(u.name[0])+'</div>'}<div style="min-width:0"><b>${esc(u.name.split(" ")[0])} ${esc(u.name.split(" ").slice(-1)[0])}</b><small>${u.role}${u.dept?" · "+esc(u.dept):""}</small></div></div>
+  <button class="navi" style="margin-top:12px" onclick="logout()">${ICONS.x}<span>Logout</span></button></div>
+ </aside>
+ <div class="main">
+  <div class="topbar">
+   <div><h2 id="pgTitle"></h2><div class="crumb" id="pgCrumb"></div></div>
+   <div class="topright">
+    <div class="bell" onclick="go('notif');markRead()">${ICONS.bell}${unread?'<span class="bdg">'+unread+'</span>':''}</div>
+   </div>
+  </div>
+  <div id="view"></div>
+ </div>
+ <nav class="bnav">${nav.map(n=>`<button class="${screen===n[0]?'on':''}" onclick="go('${n[0]}')">${ICONS[n[2]]}${n[1].split(" ")[0]}</button>`).join("")}</nav>`;
+ renderView();
+}
+function markRead(){S.notifs.forEach(n=>{if(n.uid===S.session)n.read=true});save()}
+function go(s){screen=s;renderShell();window.scrollTo({top:0})}
+function title(t,c){$("#pgTitle").textContent=t;$("#pgCrumb").textContent=c}
+function view(html){$("#view").innerHTML=html}
+
+/* ================= SCREENS ================= */
+function myRequests(){const u=me();return u.role==="Student"?S.requests.filter(r=>r.studentId===u.id):u.role==="Lecturer"?S.requests.filter(r=>r.dept===u.dept):S.requests}
+function statsOf(list){return{total:list.length,pending:list.filter(r=>r.status==="Pending").length,completed:list.filter(r=>r.status==="Completed").length,rejected:list.filter(r=>r.status==="Rejected").length,overdue:list.filter(r=>isOverdue(r)).length}}
+function statCard(ic,cls,val,label,delay){return `<div class="card" style="animation-delay:${delay}s"><div class="stat"><div class="ic ${cls}">${ic}</div><div><b>${val}</b><small>${label}</small></div></div></div>`}
+
+function renderView(){
+ const u=me();const fn={home:vHome,new:vNew,track:vTrack,work:vWork,reports:vReports,users:vUsers,notif:vNotif,profile:vProfile}[screen];
+ fn(u);
+}
+function vHome(u){
+ if(u.role==="Student"){
+  const list=S.requests.filter(r=>r.studentId===u.id),st=statsOf(list);
+  title("Hello, "+esc(u.name.split(" ")[0])+" 👋","Student · "+esc(u.dept));
+  const hh=new Date().getHours();
+  const greet=hh<12?"Good Morning":hh<17?"Good Afternoon":"Good Evening";
+  view(`
+  <div class="hero"><div class="hleft">
+   <small>${new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"})} · University College of Anuradhapura</small>
+   <h2>${greet}, ${esc(u.name.split(" ")[0])} 👋</h2>
+   <p>${st.pending?`You have <b>${st.pending} pending request${st.pending>1?"s":""}</b> — follow them live in Track Requests.`:"All caught up — no pending requests right now ✨ Submit a new one anytime."}</p>
+   <div class="hbtns"><button class="hbtn" onclick="go('new')">＋ New Request</button><button class="hbtn o" onclick="go('track')">Track Requests</button></div>
+  </div><div class="hlogo">${logoHTML(92)}</div></div>
+  <div class="tipbar"><div class="tipic">💡</div><div><b>Need help?</b> Tap the <b>AI Assistant</b> button (bottom-right) — instant answers about requests, timelines &amp; departments.</div></div>
+  <div class="grid g4">
+   ${statCard(ICONS.route,"c-orange",st.total,"Total Requests",0)}
+   ${statCard(ICONS.clock,"c-amber",st.pending,"Pending",.05)}
+   ${statCard(ICONS.check,"c-green",st.completed,"Completed",.1)}
+   ${statCard(ICONS.x,"c-red",st.rejected+st.overdue,"Rejected / Overdue",.15)}
+  </div>
+  <div class="sechead"><h3>Quick Actions</h3></div>
+  <div class="grid g3">
+   <div class="card hov" style="cursor:pointer" onclick="go('new')"><div class="stat"><div class="ic c-orange">${ICONS.plus}</div><div><b style="font-size:16px">New Request</b><small>Submit in 30 seconds</small></div></div><div class="goarrow">→</div></div>
+   <div class="card hov" style="cursor:pointer" onclick="go('track')"><div class="stat"><div class="ic c-blue">${ICONS.route}</div><div><b style="font-size:16px">Track Requests</b><small>Real-time status</small></div></div><div class="goarrow">→</div></div>
+   <div class="card hov" style="cursor:pointer" onclick="go('notif')"><div class="stat"><div class="ic c-violet">${ICONS.bell}</div><div><b style="font-size:16px">Notifications</b><small>Stay updated</small></div></div><div class="goarrow">→</div></div>
+  </div>
+  <div class="sechead"><h3>Recent Requests</h3><button class="btn ghost sm" onclick="go('track')">View all →</button></div>
+  ${list.slice(0,3).map(r=>reqCard(r)).join("")||emptyBox("No requests yet","Submit your first request to get started.","new")}`);
+  return;
+ }
+ // Lecturer / HOD / Admin dashboard
+ const list=u.role==="Lecturer"?S.requests.filter(r=>r.dept===u.dept):S.requests;
+ const st=statsOf(list);
+ const rated=S.requests.filter(r=>r.rating>0);
+ const avg=rated.length?(rated.reduce((a,r)=>a+r.rating,0)/rated.length).toFixed(1):"—";
+ title(u.role+" Dashboard",u.role==="Admin"?"All departments":esc(u.dept));
+ const done=list.filter(r=>r.status==="Completed");
+ const avgDays=done.length?(done.reduce((a,r)=>a+(r.hist[r.hist.length-1].t-r.createdAt),0)/done.length/864e5).toFixed(1):"—";
+ view(`
+ <div class="grid g4">
+  ${statCard(ICONS.route,"c-orange",st.total,"Total Requests",0)}
+  ${statCard(ICONS.clock,"c-amber",st.pending,"Pending",.05)}
+  ${statCard(ICONS.check,"c-green",st.completed,"Completed",.1)}
+  ${statCard(ICONS.x,"c-red",st.rejected,"Rejected",.15)}
+ </div>
+ <div class="grid g4" style="margin-top:16px">
+  ${statCard(ICONS.bell,"c-violet",st.overdue,"Overdue (SLA)",0)}
+  ${statCard(ICONS.user,"c-blue",S.users.filter(x=>x.active).length,"Active Users",.05)}
+  ${statCard(ICONS.chart,"c-green",avg,"Avg Satisfaction ★",.1)}
+  ${statCard(ICONS.clock,"c-amber",avgDays+" days","Avg Processing Time",.15)}
+ </div>
+ <div class="grid g2" style="margin-top:16px">
+  <div class="card"><h3>Requests by Category <small>live</small></h3>${catBars(list)}</div>
+  <div class="card"><h3>Latest Activity</h3>${list.slice().sort((a,b)=>b.createdAt-a.createdAt).slice(0,5).map(r=>`
+   <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px">
+    <div><b>${esc(r.sub)}</b><br><small style="color:var(--ink2)">${esc(r.studentName)} · ${fdate(r.createdAt)}</small></div>
+    ${pill(r.status)}</div>`).join("")||'<p style="color:var(--ink2);font-size:13px">No activity yet.</p>'}</div>
+ </div>
+ ${u.role==="Admin"?`<div class="card" style="margin-top:16px"><h3>Brand Settings <small>logo control</small></h3>
+   <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+    <div style="width:70px;height:70px;border-radius:16px;background:#f8fafc;border:1.5px dashed var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden">${logoHTML(58)}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+     <label class="btn sm" style="cursor:pointer">⬆ Upload Official Logo<input type="file" accept="image/*" hidden onchange="setLogo(this)"></label>
+     <button class="btn ghost sm" onclick="resetLogo()">Reset to Default</button>
+    </div></div>
+   <p style="color:var(--ink2);font-size:12px;margin-top:12px">The uploaded logo appears <b>exactly as provided — unmodified</b> — on the splash screen, login page, sidebar and welcome screen. PNG with transparent background recommended.</p></div>`:""}
+ ${u.role!=="Admin"?'<div class="sechead"><h3>Needs Your Action</h3><button class="btn sm" onclick="go(\'work\')">Manage →</button></div>'+list.filter(r=>["Pending","Approved"].includes(r.status)).slice(0,3).map(r=>reqCard(r,true)).join(""):""}
+ `);
+}
+function catBars(list){
+ const keys=Object.keys(CATS);const max=Math.max(1,...keys.map(c=>list.filter(r=>r.category===c).length));
+ return keys.map(c=>{const n=list.filter(r=>r.category===c).length;return `
+ <div style="margin-bottom:13px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px"><span>${c}</span><b>${n}</b></div>
+ <div class="progress"><i style="width:${n/max*100}%"></i></div></div>`}).join("");
+}
+function emptyBox(t,s,goTo){return `<div class="card"><div class="empty"><div class="ei">${ICONS.doc}</div><b>${t}</b><p style="font-size:13px;margin:6px 0 16px">${s}</p>${goTo?'<button class="btn sm" onclick="go(\''+goTo+'\')">Get Started</button>':''}</div></div>`}
+function pill(st){const ic={Pending:ICONS.clock,Approved:ICONS.check,Processing:ICONS.route,Completed:ICONS.check,Rejected:ICONS.x}[st];return `<span class="pill p-${st}">${ic} ${st}</span>`}
+function stepsHTML(r){
+ if(r.status==="Rejected"){const idx=Math.max(0,STATUSES.indexOf(r.hist.find(h=>h.s!=="Pending"&&h.s!=="Rejected")? "": "Pending"));
+  return `<div class="steps">${STATUSES.map((s,i)=>`<div class="step ${i===0?'done':''}"><span class="dot2">${i===0?'✓':i+1}</span><small>${s}</small></div>`).join("")}<div class="step rej"><span class="dot2">✕</span><small>Rejected</small></div></div>
+  <div style="background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:10px;padding:9px 12px;font-size:12.5px"><b>Reason for rejection:</b> ${esc(r.reason)}</div>`}
+ const cur=STATUSES.indexOf(r.status);
+ return `<div class="steps">${STATUSES.map((s,i)=>`<div class="step ${i<cur?'done':i===cur?(r.status==='Pending'?'now':'done now'):''}"><span class="dot2">${i<cur||i===cur&&r.status!=='Pending'?'✓':i+1}</span><small>${s}</small></div>`).join("")}</div>`;
+}
+let expandedReq=null;
+function reqCard(r,staff){
+ const u=me();const open=expandedReq===r.id;
+ return `<div class="req" style="animation-delay:${Math.random()*.15}s">
+ <div class="rt"><div><b>${esc(r.sub)}</b> <span style="color:#98a4b8;font-size:12px">· ${r.id}</span>
+  <div class="meta"><span>${ICONS.user} ${esc(r.studentName)}</span><span>🏛 ${esc(r.dept)}</span><span>${fdate(r.createdAt)}</span>${isOverdue(r)?'<span style="color:var(--bad);font-weight:700">⚠ Overdue</span>':''}</div></div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">${pill(r.status)}<button class="btn ghost sm" onclick="expandedReq=expandedReq==='${r.id}'?null:'${r.id}';renderShell()">${open?'Hide ▲':'Details ▼'}</button></div></div>
+ ${open?`<div style="margin-top:14px"><span class="pill" style="background:#eef1f6;color:var(--ink2)">${esc(r.category)}</span>
+  <div class="desc">${esc(r.desc)}</div>
+  <div class="meta" style="margin-top:10px"><span>⏱ SLA: ${CATS[r.category].sla} days · Due ${fdate(r.due)}</span></div>
+  ${stepsHTML(r)}
+  <div style="font-size:11.5px;color:#98a4b8;margin-top:4px">${r.hist.map(h=>h.s+" · "+ftime(h.t)).join("  →  ")}</div>
+  ${u.role==="Student"&&r.status==="Completed"&&!r.rating?ratingBlock(r):""}
+  ${u.role==="Student"&&r.rating?'<div style="margin-top:12px;display:flex;align-items:center;gap:8px;font-size:13px"><span style="color:#f59e0b;font-size:17px">'+"★".repeat(r.rating)+"</span> <span style='color:var(--ink2)'>"+esc(r.feedback||"")+"</span></div>":""}
+  ${staff&&["Pending","Approved","Processing"].includes(r.status)?staffActs(r):""}
+ </div>`:""}
+ </div>`;
+}
+function staffActs(r){
+ return `<div class="acts">
+  ${r.status==="Pending"?`<button class="btn ok sm" onclick="setStatus(S.requests.find(x=>x.id==='${r.id}'),'Approved');save();toast('Request approved');renderShell()">${ICONS.check} Approve</button>
+  <button class="btn bad sm" onclick="askReason('${r.id}')">${ICONS.x} Reject</button>`:""}
+  ${r.status==="Approved"?`<button class="btn info sm" onclick="setStatus(S.requests.find(x=>x.id==='${r.id}'),'Processing');save();toast('Now processing');renderShell()">${ICONS.route} Start Processing</button>`:""}
+  ${r.status==="Processing"?`<button class="btn ok sm" onclick="setStatus(S.requests.find(x=>x.id==='${r.id}'),'Completed');save();toast('Request completed');renderShell()">${ICONS.check} Mark Completed</button>`:""}
+ </div>`;
+}
+function askReason(id){const reason=prompt("Reason for rejection (shown to the student):");if(reason===null)return;if(!reason.trim())return toast("Rejection cancelled — reason required");const r=S.requests.find(x=>x.id===id);setStatus(r,"Rejected",reason.trim());save();renderShell()}
+function ratingBlock(r){
+ return `<div style="margin-top:16px;border-top:1px dashed var(--line);padding-top:14px">
+ <b style="font-size:14px">Rate this service</b><div class="stars">${[1,2,3,4,5].map(i=>`<button onmouseover="paintStars(${i},'${r.id}')" onclick="rateReq('${r.id}',${i})">${starSVG(false)}</button>`).join("")}</div>
+ <div class="fld"><textarea id="fb_${r.id}" rows="2" placeholder="Share your feedback (optional)"></textarea></div>
+ <button class="btn sm" onclick="rateReq('${r.id}',document.querySelectorAll('#view .stars.on, .stars button').length||selStars['${r.id}']||0)">Submit Feedback</button></div>`;
+}
+let selStars={};
+function paintStars(n,id){selStars[id]=n;const card=event.target.closest(".stars");[...card.children].forEach((b,i)=>b.innerHTML=starSVG(i<n))}
+function rateReq(id,stars){
+ stars=selStars[id]||stars;
+ if(!stars)return toast("Please select a star rating first");
+ const r=S.requests.find(x=>x.id===id);r.rating=stars;r.feedback=($("#fb_"+id)||{}).value||"";
+ notify("u_hod",r.id+" rated "+stars+"★","Feedback: "+(r.feedback||"No comment"));save();toast("Thank you for your feedback! ★"+stars);renderShell();
+}
+
+/* ---- New Request (Student) ---- */
+let selCat=null,selSub=null;
+function vNew(u){
+ if(u.role!=="Student")return go("home");
+ title("New Request","Submit → Route → Process → Track");
+ if(!selCat){
+  view(`<div class="card"><h3>Select a Category <small>Step 1 of 2</small></h3>
+  <div class="catgrid">${Object.entries(CATS).map(([k,v])=>`
+   <button class="catcard ${selCat===k?'sel':''}" onclick="selCat='${k}';renderShell()">
+    <div class="ic">${ICONS[v.icon]}</div><b>${k}</b><small>${v.desc} · SLA ${v.sla} days</small></button>`).join("")}</div>
+  <div style="margin-top:18px;display:flex;gap:10px"><button class="btn ghost" style="width:auto" onclick="go('home')">Cancel</button></div></div>`);
+  return;
+ }
+ const c=CATS[selCat];
+ view(`<div class="card" style="max-width:640px"><h3>${esc(selCat)} <small>Step 2 of 2</small></h3>
+ <div class="err" id="nerr"></div>
+ <div class="fld"><label>Select service <b style="color:var(--brand)">*</b></label>
+  <div class="subs">${c.subs.map(s=>`<button class="subchip ${selSub===s?'sel':''}" onclick="selSub='${s}';renderShell()">${s}</button>`).join("")}</div></div>
+ <div class="fld"><label>Department</label><input value="${esc(u.dept)}" disabled style="background:#eef1f6"></div>
+ <div class="fld"><label>Description <b style="color:var(--brand)">*</b></label><textarea id="n_desc" rows="3" placeholder="Describe your request in detail..."></textarea></div>
+ <div class="fld"><label>Supporting document (optional)</label><input type="file" id="n_file"></div>
+ <div style="background:var(--brand-l);border-radius:12px;padding:11px 14px;font-size:12.5px;color:#9a5a1e;margin-bottom:16px">⏱ Expected completion: <b>${c.sla} working days</b> · You will be notified at every stage.</div>
+ <div style="display:flex;gap:10px"><button class="btn" onclick="submitReq()">Submit Request →</button>
+ <button class="btn ghost" style="width:auto" onclick="selCat=null;selSub=null;renderShell()">← Back</button></div></div>`);
+}
+function submitReq(){
+ const desc=$("#n_desc").value.trim();
+ if(!selSub){$("#nerr").textContent="Please select a service.";$("#nerr").style.display="block";return}
+ if(!desc){$("#nerr").textContent="Please add a short description.";$("#nerr").style.display="block";return}
+ const u=me();
+ const r={id:"REQ-"+(2400+S.requests.length+1+Math.floor(Math.random()*90)),studentId:u.id,studentName:u.name,regNo:u.regNo,dept:u.dept,category:selCat,sub:selSub,desc,status:"Pending",reason:"",createdAt:Date.now(),due:Date.now()+CATS[selCat].sla*864e5,rating:0,feedback:"",hist:[{s:"Pending",t:Date.now()}]};
+ S.requests.unshift(r);
+ notify(u.id,"Request "+r.id+" submitted",selSub+" — automatically routed to "+u.dept+" officer.");
+ notify("u_hod","New request "+r.id,u.name+" submitted: "+selSub);
+ save();selCat=null;selSub=null;
+ toast("Request submitted & routed to your department ✓");
+ const btn=event.target;btn.textContent="✓ Submitted!";setTimeout(()=>go("track"),700);
+}
+
+/* ---- Track (Student) ---- */
+function vTrack(u){
+ if(u.role!=="Student")return go("home");
+ const list=S.requests.filter(r=>r.studentId===u.id);
+ title("Track Requests","Live status · SLA · Feedback");
+ view(list.length?list.map(r=>reqCard(r)).join(""):emptyBox("No requests yet","Submit a request and track it here in real time.","new"));
+}
+
+/* ---- Work queue (Lecturer/HOD/Admin) ---- */
+let workFilter="All";
+function vWork(u){
+ const list=myRequests();
+ title(u.role==="Admin"?"All Requests":"Manage Requests",u.role==="Lecturer"?"Assigned to you · "+esc(u.dept):"Department queue · "+(u.dept?esc(u.dept):"All departments"));
+ const counts={All:list.length,Pending:list.filter(r=>r.status==="Pending").length,Approved:list.filter(r=>r.status==="Approved").length,Processing:list.filter(r=>r.status==="Processing").length,Completed:list.filter(r=>r.status==="Completed").length,Rejected:list.filter(r=>r.status==="Rejected").length};
+ view(`<div class="subs" style="margin-bottom:18px">${Object.keys(counts).map(k=>`<button class="subchip ${workFilter===k?'sel':''}" onclick="workFilter='${k}';renderShell()">${k} (${counts[k]})</button>`).join("")}</div>
+ ${list.filter(r=>workFilter==="All"||r.status===workFilter).map(r=>reqCard(r,true)).join("")||emptyBox("Nothing here","No requests match this filter.",null)}`);
+}
+
+/* ---- Reports ---- */
+function vReports(u){
+ title("Reports & Analytics","Export · Monthly insights");
+ const list=myRequests();const st=statsOf(list);
+ const byDept=DEPTS.map(d=>({d,n:list.filter(r=>r.dept===d).length})).filter(x=>x.n>0);
+ const rated=S.requests.filter(r=>r.rating>0);
+ const issues=Object.values(CATS).flatMap(c=>c.subs).map(s=>({s,n:list.filter(r=>r.sub===s).length})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+ view(`
+ <div class="grid g3">
+  <div class="card"><h3>Monthly Summary</h3>
+   <table class="tbl"><tr><th>Metric</th><th>Value</th></tr>
+   <tr><td>Total requests</td><td><b>${st.total}</b></td></tr>
+   <tr><td>Completed</td><td><b style="color:var(--ok)">${st.completed}</b></td></tr>
+   <tr><td>Pending / Processing</td><td><b style="color:var(--warn)">${st.pending+list.filter(r=>r.status==="Processing").length}</b></td></tr>
+   <tr><td>Rejected</td><td><b style="color:var(--bad)">${st.rejected}</b></td></tr>
+   <tr><td>Overdue (SLA breach)</td><td><b style="color:var(--bad)">${st.overdue}</b></td></tr>
+   <tr><td>Avg rating</td><td><b>${rated.length?"★"+(rated.reduce((a,r)=>a+r.rating,0)/rated.length).toFixed(1):"—"}</b></td></tr></table></div>
+  <div class="card"><h3>Department-wise</h3>${byDept.map(x=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span>${esc(x.d)}</span><b>${x.n}</b></div><div class="progress"><i style="width:${x.n/Math.max(1,...byDept.map(y=>y.n))*100}%"></i></div></div>`).join("")||'<p style="color:var(--ink2);font-size:13px">No data.</p>'}</div>
+  <div class="card"><h3>Most Common Issues</h3>${issues.map((x,i)=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px"><span>${i+1}. ${esc(x.s)}</span><b>${x.n}</b></div>`).join("")||'<p style="color:var(--ink2);font-size:13px">No data.</p>'}</div>
+ </div>
+ <div class="card" style="margin-top:16px"><h3>Export Report</h3>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+   <button class="btn sm" onclick="exportCSV()">${ICONS.down} Download CSV / Excel</button>
+   <button class="btn info sm" onclick="window.print()">🖨 Print / Save as PDF</button>
+  </div>
+  <p style="color:var(--ink2);font-size:12px;margin-top:10px">CSV opens in Excel · Print dialog allows saving as PDF.</p></div>
+ <div class="card" style="margin-top:16px"><h3>All Requests — Report View</h3><div class="twrap"><table class="tbl">
+  <tr><th>ID</th><th>Student</th><th>Department</th><th>Service</th><th>Status</th><th>Created</th><th>Rating</th></tr>
+  ${list.map(r=>`<tr><td>${r.id}</td><td>${esc(r.studentName)}</td><td>${esc(r.dept)}</td><td>${esc(r.sub)}</td><td>${pill(r.status)}</td><td>${fdate(r.createdAt)}</td><td>${r.rating?"★"+r.rating:"—"}</td></tr>`).join("")}</table></div></div>`);
+}
+function exportCSV(){
+ const rows=[["ID","Student","RegNo","Department","Category","Service","Status","Reason","Created","Due","Rating","Feedback"]];
+ myRequests().forEach(r=>rows.push([r.id,r.studentName,r.regNo,r.dept,r.category,r.sub,r.status,r.reason,fdate(r.createdAt),fdate(r.due),r.rating||"",r.feedback]));
+ const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(",")).join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="UCA_UniServe_Report.csv";a.click();
+ toast("Report downloaded ✓");
+}
+
+/* ---- Users (Admin) ---- */
+let userFilter="All";
+function vUsers(u){
+ title("User Management","Accounts · Roles · Departments");
+ const counts={All:S.users.length,Student:S.users.filter(x=>x.role==="Student").length,Lecturer:S.users.filter(x=>x.role==="Lecturer").length,HOD:S.users.filter(x=>x.role==="HOD").length};
+ view(`
+ <div class="grid g4">
+  ${statCard(ICONS.users,"c-blue",S.users.filter(x=>x.active).length,"Active Accounts",0)}
+  ${statCard(ICONS.user,"c-amber",S.users.filter(x=>!x.active).length,"Deactivated",.05)}
+  ${statCard(ICONS.grad,"c-orange",counts.Student,"Students",.1)}
+  ${statCard(ICONS.chart,"c-violet",counts.Lecturer+counts.HOD,"Staff",.15)}
+ </div>
+ <div class="subs" style="margin:18px 0">${Object.keys(counts).map(k=>`<button class="subchip ${userFilter===k?'sel':''}" onclick="userFilter='${k}';renderShell()">${k} (${counts[k]})</button>`).join("")}</div>
+ <div class="card"><div class="twrap"><table class="tbl">
+ <tr><th>User</th><th>Role</th><th>Department</th><th>Email</th><th>Status</th><th style="text-align:right">Actions</th></tr>
+ ${S.users.filter(x=>userFilter==="All"||x.role===userFilter).map(x=>`<tr>
+  <td><div style="display:flex;align-items:center;gap:10px">${avatar(x,34)}<div><b>${esc(x.name)}</b><br><small style="color:var(--ink2)">@${esc(x.username)} · ${esc(x.regNo)}</small></div></div></td>
+  <td><span class="pill" style="background:${x.role==='Admin'?'#fde3e3':x.role==='HOD'?'#ede9fe':x.role==='Lecturer'?'#e3ecff':'#dcf5e5'};color:${x.role==='Admin'?'#b91c1c':x.role==='HOD'?'#6d28d9':x.role==='Lecturer'?'#1d4ed8':'#15803d'}">${x.role}</span></td>
+  <td>${esc(x.dept||"—")}</td><td>${esc(x.email)}</td>
+  <td><span class="pill" style="background:${x.active?'#dcf5e5':'#fee2e2'};color:${x.active?'#15803d':'#b91c1c'}">${x.active?'● Active':'● Inactive'}</span></td>
+  <td style="text-align:right;white-space:nowrap">
+   ${x.role!=="Admin"?`<button class="btn ghost sm" onclick="cycleRole('${x.id}')">Role</button>
+   <button class="btn ${x.active?'bad':'ok'} sm" onclick="toggleUser('${x.id}')">${x.active?'Deactivate':'Activate'}</button>`:'<small style="color:#98a4b8">protected</small>'}
+  </td></tr>`).join("")}</table></div></div>`);
+}
+function toggleUser(id){const x=S.users.find(u=>u.id===id);x.active=!x.active;save();toast(x.name+" "+(x.active?"activated":"deactivated"));renderShell()}
+function cycleRole(id){const x=S.users.find(u=>u.id===id);const order=["Student","Lecturer","HOD"];x.role=order[(order.indexOf(x.role)+1)%3];save();toast(x.name+" is now "+x.role);renderShell()}
+
+/* ---- Notifications ---- */
+function vNotif(u){
+ title("Notifications","Real-time updates");
+ const list=S.notifs.filter(n=>n.uid===u.id);
+ const iconFor=t=>t.includes("Completed")?["c-green",ICONS.check]:t.includes("Rejected")?["c-red",ICONS.x]:t.includes("Processing")?["c-violet",ICONS.route]:t.includes("Approved")?["c-blue",ICONS.check]:t.includes("rated")?["c-amber",starSVG(true).replace('class="off"','')]:["c-orange",ICONS.bell];
+ view(list.length?list.map(n=>{const[cls,ic]=iconFor(n.title);return `<div class="notif"><div class="ni ${cls}">${ic}</div><div style="min-width:0"><b>${esc(n.title)}</b><p>${esc(n.body)}</p></div><time>${ftime(n.t)}</time></div>`}).join(""):`<div class="card"><div class="empty"><div class="ei">${ICONS.bell}</div><b>All caught up!</b><p style="font-size:13px">No notifications right now.</p></div></div>`);
+}
+
+/* ---- Profile ---- */
+function vProfile(u){
+ title("My Profile","Account details");
+ const list=S.requests.filter(r=>r.studentId===u.id);
+ view(`
+ <div class="card"><div class="profcard">
+  ${u.photo?'<img src="'+u.photo+'">':'<div class="av">'+esc(u.name[0])+'</div>'}
+  <div style="flex:1;min-width:220px"><h2 style="font-size:20px">${esc(u.name)} <span class="pill" style="background:var(--brand-l);color:var(--brand-d)">${u.role}</span></h2>
+  <p style="color:var(--ink2);font-size:13.5px;margin-top:4px">University College of Anuradhapura</p>
+  <div class="kv">
+   <div class="k"><small>Username</small><b>@${esc(u.username)}</b></div>
+   <div class="k"><small>Email</small><b>${esc(u.email)}</b></div>
+   <div class="k"><small>Registration No</small><b>${esc(u.regNo)}</b></div>
+   <div class="k"><small>Department</small><b>${esc(u.dept||"—")}</b></div>
+   ${u.role==="Student"?`<div class="k"><small>Total Requests</small><b>${list.length}</b></div>`:""}
+  </div></div>
+  <div style="display:flex;flex-direction:column;gap:10px">
+   <label class="btn ghost sm" style="cursor:pointer">Change Photo<input type="file" accept="image/*" hidden onchange="changePhoto(this)"></label>
+   <button class="btn bad sm" onclick="logout()">Logout</button>
+  </div></div></div>
+ <div class="card" style="margin-top:16px"><h3>Platform Security</h3>
+  <div class="grid g3">
+   <div class="stat"><div class="ic c-green">${ICONS.check}</div><div><b style="font-size:15px">Role-Based Access</b><small>Department-wise data isolation</small></div></div>
+   <div class="stat"><div class="ic c-blue">${ICONS.user}</div><div><b style="font-size:15px">Verified Accounts</b><small>University email / Reg No check</small></div></div>
+   <div class="stat"><div class="ic c-violet">${ICONS.wrench}</div><div><b style="font-size:15px">Encrypted Storage</b><small>Secure document handling</small></div></div>
+  </div></div>`);
+}
+function changePhoto(inp){const f=inp.files[0];if(!f)return;const rd=new FileReader();rd.onload=e=>{me().photo=e.target.result;save();renderShell();toast("Profile photo updated")};rd.readAsDataURL(f)}
+
+/* ================= LOGO UPLOAD ================= */
+function logoHTML(sz){if(S.logo)return '<img src="'+S.logo+'" style="width:'+sz+'px;height:'+sz+'px;object-fit:contain;flex:none">';return LOGO}
+function logoBigHTML(){if(S.logo)return '<img src="'+S.logo+'" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 16px 34px rgba(0,0,0,.45))">';return LOGO_BIG}
+function applyLogos(){const sp=$("#splashLogo");if(sp&&S.logo)sp.innerHTML=logoBigHTML();const wl=$("#welcomeLogo");if(wl&&S.logo)wl.innerHTML=logoBigHTML()}
+function setLogo(inp){const f=inp.files[0];if(!f)return;const rd=new FileReader();rd.onload=e=>{const img=new Image();img.onload=()=>{const cv=document.createElement("canvas");const sc=Math.min(1,520/img.width);cv.width=Math.max(1,Math.round(img.width*sc));cv.height=Math.max(1,Math.round(img.height*sc));const cx=cv.getContext("2d");cx.drawImage(img,0,0,cv.width,cv.height);removeWhiteBg(cx,cv.width,cv.height);S.logo=cv.toDataURL("image/png");save();toast("Official logo updated ✓");applyLogos();if($("#auth").style.display!=="none")renderAuth();if($("#app").classList.contains("on"))renderShell()};img.src=e.target.result};rd.readAsDataURL(f)}
+function removeWhiteBg(cx,w,h){const d=cx.getImageData(0,0,w,h),p=d.data,tol=30;const isW=i=>p[i]>255-tol&&p[i+1]>255-tol&&p[i+2]>255-tol;const push=(x,y)=>{const i=(y*w+x)*4;if(isW(i)&&p[i+3]>0){p[i+3]=0;q.push(x,y)}};const q=[];for(let x=0;x<w;x++){push(x,0);push(x,h-1)}for(let y=0;y<h;y++){push(0,y);push(w-1,y)}while(q.length){const y=q.pop(),x=q.pop();if(x>0)push(x-1,y);if(x<w-1)push(x+1,y);if(y>0)push(x,y-1);if(y<h-1)push(x,y+1)}cx.putImageData(d,0,0)}
+function resetLogo(){S.logo=null;save();toast("Logo reset to default");applyLogos();if($("#auth").style.display!=="none")renderAuth();if($("#app").classList.contains("on"))renderShell()}
+
+/* ================= FORGOT PASSWORD ================= */
+function openFP(){const m=$("#fpModal");m.classList.add("open");$("#fpStep1").style.display="block";$("#fpStep2").style.display="none";$("#fperr").style.display="none";$("#fp_q").value=""}
+function fpClose(){$("#fpModal").classList.remove("open")}
+function fpFind(){const q=$("#fp_q").value.trim().toLowerCase();const u=S.users.find(x=>x.username.toLowerCase()===q||x.email.toLowerCase()===q);const e=$("#fperr");if(!u){e.textContent="No account found for that username / email.";e.style.display="block";return}e.style.display="none";$("#fpStep1").style.display="none";$("#fpStep2").style.display="block";$("#fpPass").textContent=u.password;toast("Account found ✓")}
+
+/* ================= AI ASSISTANT ================= */
+let aiOpen=false,aiGreeted=false;
+function toggleAI(){aiOpen=!aiOpen;$("#aiPanel").classList.toggle("open",aiOpen);if(aiOpen&&!aiGreeted){aiGreeted=true;aiTyping(()=>aiMsg(aiGreet()))}}
+function aiRole(){const u=me();return u?u.role:null}
+function aiGreet(){
+ const u=me();const n=u?u.name.split(" ")[0]:"friend";
+ const h=new Date().getHours();
+ const t=h<12?"Good morning ☀️":h<17?"Good afternoon 🌤":"Good evening 🌙";
+ const r=aiRole();
+ if(r==="Student")return t+", "+n+"! 👋\nI'm your <b>Student Assistant</b>. I can help you:\n\n• Submit & track requests\n• Book appointments\n• Explain timelines & departments\n• Recover your password\n\nHow can I help you today?";
+ if(r==="Lecturer")return t+", "+n+"! 👋\nI'm your <b>Lecturer Assistant</b>. I help you work through assigned requests, approve & process items, stay inside SLA deadlines and read student feedback.\n\nWhat would you like to do first?";
+ if(r==="HOD")return t+", "+n+"! 👋\nI'm your <b>HOD Assistant</b> — department queue control, SLA breach alerts, routing decisions and analytics.\n\nHow can I assist your department today?";
+ return t+", Admin! 👋\nI'm your <b>Admin Assistant</b> — user accounts, roles, branding, reports and platform security.\n\nWhat do you need?";
+}
+function setChipsFor(){
+ const r=aiRole();
+ const m={
+  Student:["How do I submit a request?","Track my request","What can this app do?","Forgot my password 🔑","How does SLA work?","What departments exist?"],
+  Lecturer:["Show my pending requests","How do I approve a request?","Any overdue items?","View student feedback","Explain the SLA rules"],
+  HOD:["Department summary","Any SLA breaches?","How do I export reports?","Requests by category","Routing best practices"],
+  Admin:["User statistics","How do I change a role?","Upload the official logo","Export full report","Platform security tips"]};
+ setChips(m[r]||m.Student);
+}
+function aiReply(t){
+ const r=aiRole();
+ if(r==="Lecturer")return lecAI(t);
+ if(r==="HOD")return hodAI(t);
+ if(r==="Admin")return adminAI(t);
+ return stuAI(t);
+}
+/* ---- Student AI · English only ---- */
+function stuAI(t){
+ if(has(t,"hello","hi ","hey","good morning","good afternoon","good evening"))
+  return {text:"Hello! 😊 Welcome to UniServe UCA — ask me anything.\n\nI can help with requests, tracking, appointments, departments, timelines and password recovery."};
+ if(has(t,"submit","new request","book","appointment"))
+  return {text:"Easy — 3 steps:\n1️⃣ Open <b>New Request</b>\n2️⃣ Pick a category & service\n3️⃣ Add a short description & submit ✅\n\nYour request is automatically routed to the right officer. Taking you there now…",after:()=>go("new")};
+ if(has(t,"track","status","progress","where is"))
+  return {text:"Every request has a live timeline:\n<b>Pending → Approved → Processing → Completed</b>\n\nRejections always show the exact reason so you know what to fix. Opening your tracker… 🔎",after:()=>go("track")};
+ if(has(t,"forgot","password","recover","reset"))
+  return {text:"No stress! 🔑 Opening <b>Password Recovery</b> — just type your username or email and your password appears instantly.",after:openFP};
+ if(has(t,"department","faculties"))
+  return {text:"<b>8 departments</b> at University College of Anuradhapura:\n• "+DEPTS.join("\n• ")};
+ if(has(t,"sla","late","overdue","delay","how long","how many days"))
+  return {text:"⏱ Promised timelines (SLA):\n• Documents — <b>3 days</b>\n• Appointments — <b>2 days</b>\n• Academic issues — <b>5 days</b>\n• Facilities — <b>4 days</b>\n\nLate items are flagged with a red ⚠ <b>Overdue</b> mark."};
+ if(has(t,"feedback","rate","star","rating","review"))
+  return {text:"After your request is completed you can give ⭐ <b>1–5 stars</b> plus a comment. Your feedback directly improves campus services 💛"};
+ if(has(t,"notif","alert","notification"))
+  return {text:"🔔 You get notified at every stage: submitted, approved, processing, completed, rejected (with reason) and overdue alerts. Tap the 🔔 bell at the top of the screen to see them all."};
+ if(has(t,"login","log in","sign in"))
+  return {text:"Select your role → enter your username + password → press Login.\nNew here? Use <b>Sign Up</b> to create an account first 🆕"};
+ if(has(t,"who are you","about you"))
+  return {text:"I'm your <b>Student Assistant</b> ✨ — I help with requests, tracking, appointments, feedback and password recovery, 24/7."};
+ if(has(t,"thank","thanks"))
+  return {text:"You're most welcome! 💛 Anything else I can help with?"};
+ if(has(t,"help","what can you","commands"))
+  return {text:"I can help with:\n• 📝 Submit & track requests\n• 🔑 Password recovery\n• 🏛 All 8 departments\n• ⏱ SLA timelines\n• 🔔 Notifications & ⭐ feedback\n\nJust type naturally!"};
+ return {text:"Hmm, I didn't quite catch that 🤔 Try one of the suggestion chips below, or type <b>help</b>."};
+}
+/* ---- Lecturer AI · English only ---- */
+function lecAI(t){
+ const u=me();const q=S.requests.filter(r=>r.dept===u.dept);
+ const pending=q.filter(r=>r.status==="Pending"),over=q.filter(r=>isOverdue(r));
+ if(has(t,"hello","hi ","hey","good morning","good afternoon","good evening"))
+  return {text:"Hello! 👋 Ready to work through today's queue? Ask me about pending requests, the approval workflow, SLA deadlines or student feedback."};
+ if(has(t,"pending","assigned","show my","queue","requests"))
+  return {text:"You have <b>"+pending.length+" pending</b> request(s) in "+esc(u.dept)+"."+(pending.length?"\n"+pending.slice(0,3).map(r=>"• "+esc(r.sub)+" ("+r.id+")").join("\n"):"")+"\n\nOpening your work queue…",after:()=>go("work")};
+ if(has(t,"approve","process","start","workflow","how do i"))
+  return {text:"The workflow is simple:\n<b>Pending → Approve → Processing → Completed</b>\n\n1. Open <b>Manage Requests</b>\n2. Click <b>Approve</b> (or <b>Reject</b> with a reason)\n3. When work begins, press <b>Start Processing</b>\n4. When finished, press <b>Mark Completed</b>\n\nStudents are notified automatically at every step."};
+ if(has(t,"overdue","late","sla","breach","deadline"))
+  return {text:"⏱ SLA rules: Documents 3 days · Appointments 2 days · Academic 5 days · Facilities 4 days.\n\nYou currently have <b>"+over.length+" overdue</b> item(s) — they carry a red ⚠ flag. Prioritize those first!"};
+ if(has(t,"feedback","rating","review","star"))
+  return {text:"⭐ Students rate completed requests from 1–5 stars with comments. Check the <b>Dashboard</b> for your average satisfaction score, and read individual feedback inside each request's detail view."};
+ if(has(t,"reject","decline","reason"))
+  return {text:"To reject a request, click <b>Reject</b> and type a clear, actionable reason — the student sees it instantly and can fix & resubmit. Vague reasons create repeat requests 👍"};
+ if(has(t,"help","what can"))
+  return {text:"I can help you with:\n• 📥 Pending & assigned request counts\n• ✅ Approve / process / complete workflow\n• ⚠ SLA & overdue monitoring\n• ⭐ Student feedback & ratings\n• 🚫 Rejecting professionally"};
+ return {text:"I didn't quite get that 🤔 Try a suggestion chip below, or type <b>help</b>."};
+}
+/* ---- HOD AI · English only ---- */
+function hodAI(t){
+ const u=me();const q=S.requests.filter(r=>r.dept===u.dept);
+ const st=statsOf(q);
+ if(has(t,"hello","hi ","hey","good morning","good afternoon","good evening"))
+  return {text:"Hello! 👋 How is the department running today? Ask about summaries, SLA breaches, reports or routing."};
+ if(has(t,"summary","dashboard","overview","status","stats"))
+  return {text:"📊 <b>"+esc(u.dept)+"</b> — live summary:\n• Total requests: <b>"+st.total+"</b>\n• Pending: <b>"+st.pending+"</b> · Processing: <b>"+q.filter(r=>r.status==="Processing").length+"</b>\n• Completed: <b>"+st.completed+"</b> · Rejected: <b>"+st.rejected+"</b>\n• ⚠ Overdue: <b>"+st.overdue+"</b>\n\nOpening your dashboard…",after:()=>go("home")};
+ if(has(t,"breach","overdue","sla","late","deadline"))
+  return {text:"⏱ SLA: Documents 3 days · Appointments 2 days · Academic 5 days · Facilities 4 days.\n\nYour department currently has <b>"+st.overdue+" overdue</b> request(s). Overdue items are flagged ⚠ and should be prioritized daily."};
+ if(has(t,"export","report","csv","pdf","analytics"))
+  return {text:"Reports include a monthly summary, department-wise volume, most common issues and a full request table.\nExport as <b>CSV (Excel)</b> or <b>Print → PDF</b>. Opening Reports…",after:()=>go("reports")};
+ if(has(t,"route","assign","prioritize","manage","best practice"))
+  return {text:"Routing best practices:\n1. Approve clean requests immediately — it starts visible progress\n2. Always reject with clear reasons so students can resubmit correctly\n3. Move approved items to <b>Processing</b> as soon as work actually begins\n4. Review ⚠ overdue flags every morning"};
+ if(has(t,"category","common","issues","volume"))
+  return {text:"Your live category breakdown is on the <b>Dashboard</b>. Tracking the most frequent issues helps you plan lab support, LMS maintenance and document services ahead of demand."};
+ if(has(t,"help","what can"))
+  return {text:"I can help with:\n• 📊 Department summary & live stats\n• ⚠ SLA breach monitoring\n• 📈 Reports & CSV/PDF export\n• 🔀 Routing & prioritization best practices"};
+ return {text:"Hmm 🤔 Try a suggestion chip below, or type <b>help</b>."};
+}
+/* ---- Admin AI · English only ---- */
+function adminAI(t){
+ const stu=S.users.filter(x=>x.role==="Student").length,staff=S.users.filter(x=>["Lecturer","HOD"].includes(x.role)).length;
+ if(has(t,"hello","hi ","hey","good morning","good afternoon","good evening"))
+  return {text:"Hello, Admin! 👋 System at your service. Ask about users, branding, reports or security."};
+ if(has(t,"user","account","statistics","stats"))
+  return {text:"👥 Platform users:\n• Students: <b>"+stu+"</b>\n• Staff (Lecturer/HOD): <b>"+staff+"</b>\n• Active: <b>"+S.users.filter(x=>x.active).length+"</b> of "+S.users.length+" total\n\nOpening User Management…",after:()=>go("users")};
+ if(has(t,"role","change","promote","demote"))
+  return {text:"To change a role: go to <b>Users</b> and click <b>Role</b> beside any account — it cycles Student → Lecturer → HOD. The Admin account itself is protected 🔐"};
+ if(has(t,"deactivate","activate","block","disable"))
+  return {text:"Use <b>Deactivate</b> in User Management to block an account instantly — that user cannot log in until reactivated. The Admin account can never be deactivated."};
+ if(has(t,"logo","brand","icon"))
+  return {text:"🖼 Branding: Dashboard → <b>Brand Settings</b> → Upload Official Logo.\nWhite backgrounds are <b>automatically removed</b> so the logo blends perfectly with both dark and light backgrounds — the artwork itself is never altered. PNG with a transparent background is recommended."};
+ if(has(t,"report","export","data"))
+  return {text:"Full analytics: totals, SLA breaches, satisfaction ratings and department tables — exportable as <b>CSV</b> or <b>PDF</b>. Opening Reports…",after:()=>go("reports")};
+ if(has(t,"security","safe","protect","encrypt"))
+  return {text:"🔐 Security features: role-based access control, department-level data isolation, password recovery flow, account deactivation and encrypted local storage."};
+ if(has(t,"help","what can"))
+  return {text:"I can help with:\n• 👥 User statistics & role management\n• 🖼 Branding / official logo upload\n• 📊 Reports & data exports\n• 🔐 Platform security"};
+ return {text:"Not sure about that one 🤔 Try a chip below, or type <b>help</b>."};
+}
+
+
+/* ================= AI CORE ================= */
+function has(t){const s=(""+t).toLowerCase();for(let i=1;i<arguments.length;i++){if(s.indexOf((""+arguments[i]).toLowerCase())>-1)return true}return false}
+function aiMsg(html){const b=$("#aiBody");b.insertAdjacentHTML("beforeend",'<div class="msg ai">'+html+'</div>');b.scrollTop=b.scrollHeight}
+function aiTyping(cb){const b=$("#aiBody");const id="ty"+Date.now();b.insertAdjacentHTML("beforeend",'<div class="msg ai" id="'+id+'"><span class="typing"><i></i><i></i><i></i></span></div>');b.scrollTop=b.scrollHeight;setTimeout(function(){const el=document.getElementById(id);if(el)el.remove();cb()},620+Math.random()*560)}
+function setChips(arr){$("#aiChips").innerHTML=(arr||[]).map(function(c){return '<button onclick="aiChip(this)">'+esc(c)+'</button>'}).join("")}
+function aiChip(btn){$("#aiIn").value=btn.textContent;aiSend()}
+function aiSend(){
+ const inp=$("#aiIn");const t=inp.value.trim();if(!t)return;
+ const b=$("#aiBody");
+ b.insertAdjacentHTML("beforeend",'<div class="msg me">'+esc(t)+'</div>');
+ inp.value="";b.scrollTop=b.scrollHeight;
+ aiTyping(function(){const r=aiReply(t);aiMsg(r.text);if(r.after)setTimeout(r.after,950)});
+}
+/* ================= BOOT ================= */
+load();
+applyLogos();
+document.addEventListener("click",()=>{try{if(beep.c&&beep.c.state==="suspended")beep.c.resume()}catch(e){}});
+if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){navigator.serviceWorker.register("sw.js").catch(()=>{})}
+setChips(["How do I submit a request?","Track my request","Forgot my password 🔑","What departments exist?","How does SLA work?","What can this app do?"]);
+setTimeout(()=>{$("#splash").classList.add("hide");
+ if(me()){$("#app").classList.add("on");renderShell()}else showAuth();
+},2700);
+</script>
+</body>
+</html>
